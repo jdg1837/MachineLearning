@@ -1,0 +1,23 @@
+Name: Juan Diego Gonzalez German
+ID: 1001401837
+Language: Python 2.4
+
+Evaluation Method:
+
+The calculateScore function in the maxConnect4Board module works both as an evaluation function for a mid-game state, and as a function that calculates the final scores for a terminal state. It tales two inputs, a gameboard (the 6*7 array of pieces in the maxConnect4Game class), the player whose score is being calculated (either 1 or 2), and a Boolean that is True if it should find the actual score (number of 4 pieces in a row), or a utility approximation
+
+The function then extracts from that gameboard all sequences of 4 locations in a row it has. These will be the same locations for all boards, but the values will naturally change. For each of these sequences, which are shaped as a list of four numbers, the function calculates how many pieces the player has in it, and thus how many pieces "away" they are from getting a 4 in a row. The function does it by calling a checkSequence function (in the same file) with the sequence list as a parameter. This function:
+
+•	Checks if the opposing player has any piece in the sequence. If so, then return a 0, as they player whose score we are counting could not possibly have 4 in a row there, not now, and not in the future
+•	If the player has 4 pieces in a row there, return 1, as that equals one full point
+•	If the Boolean is True and we are just looking for a 4 in a row, and that is not the case, return 0. Otherwise, return with the approximation utility
+•	If the player has 3 pieces in the sequence, return 0.25, assuming a 25% chance that this sequence ends up being completed
+•	If the player has 2 pieces in the sequence, return 0.05
+•	If the player has only 1 piece in the sequence, return 0.01
+•	Each returned value is added to a counter variable that is then returned to the MaxConnect4Game object as that player’s score
+
+•	It is important to remember that at the first step, we make sure the opponent has no pieces. Therefore, any spot that does not have a player’s piece must be a zero, and thus fill-able
+•	The function works for vertical, horizontal, and diagonal sequences
+•	When the board is not full, the function returns a utility value that determines the desirability of the state for each player. The value returned to the minmax algorithm is the utility for the max player minus the utility for the min player
+•	When the state is a terminal one, the function will just find sequences of 4s and thus return the final score for each player
+•	The function works for both states since all games end at exactly the same point, after 42 moves
